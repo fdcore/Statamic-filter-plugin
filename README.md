@@ -6,23 +6,29 @@ Plugin generate conditions text for {{ entries:listing }}.
 ## Install
   
 1. Download and unpack
-2. Put folders to _add-ons folder and to _config/add-ons
+2. Put folders to **_add-ons** folder and to **_config/add-ons**
   
 ## Tags
   
-Put tag {{ filter }} to conditions in {{ entries:listing }}.
+Put tag `{{ filter }}` to conditions in `{{ entries:listing }}`.
 
 Example
 
 ```
-{{ entries:listing folder="blog" conditions="{ filter }" }} {{ title }} {{ /entries:listing }}
+{{ entries:listing folder="blog" conditions="{ filter }" }}
+  
+  {{ title }}
+
+{{ /entries:listing }}
 ```
 
 ### params_link
 
-Tag generate get params for url link.
+Tag generate **GET** params for url link.
 
 ```{{ filter:params_link }}```
+
+Any params in tag, replaced or create **GET** value.
 
 Example:
 
@@ -48,4 +54,11 @@ year: # key name in GET
   filter: int, abs, no_zero # (not required) filter list
   default: 2014 # (not required) default value if get param no set
 ```
+
+### Filter list
+
+- int
+- any
+- abs
+- no_zero
 
