@@ -63,3 +63,21 @@ year: # key name in GET
 - abs
 - no_zero
 
+## Pagination
+
+For pagination use tag **{{ filter:params }}**, add tag after pagination tag in href argumenet.
+
+Example:
+  
+```html
+{{ entries:pagination folder="blog" conditions="{ filter }" limit="10"  }}
+    {{ if previous_page }}
+        <a href="{{ previous_page }}&{{ filter:params }}">Previous Page</a>
+    {{ endif }}
+    {{ if next_page }}
+        <a href="{{ next_page }}&{{ filter:params }}">Next Page</a>
+    {{ endif }}
+{{ /entries:pagination }}
+```
+
+

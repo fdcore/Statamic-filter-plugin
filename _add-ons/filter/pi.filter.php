@@ -30,9 +30,12 @@ class Plugin_filter extends Plugin
       // return cached data
       $content = $this->blink->get('filter');
       
-      if($content) 
-         return $content;
-      
+      if($content) {
+         $this->_cond = $content['_cond'];
+         $this->_get = $content['_get'];
+         return $content['conditions'];
+      }
+
       foreach ($params_list as $key => $values) {
          
          // skip settings
@@ -89,9 +92,13 @@ class Plugin_filter extends Plugin
 
       $conditions = implode(',', $this->_cond);
       
-      $this->blink->set('filter', $conditions);
+      $this->blink->set('filter', array(
+         'conditions' => $conditions,
+         '_cond' => $this->_cond,
+         '_get' => $this->_get,
+      ));
       
-      return $this->_conditions;
+      return $conditions;
 
    }
 
@@ -114,15 +121,33 @@ class Plugin_filter extends Plugin
          <li {{ if get:year == '2014' }}class="uk-active"{{ /if }}><a href="{{ filter:params_link year="2014" }}">2014</a>
    */
    public function params_link(){
+      
       $global_config = Helper::pick($this->getConfig(), array());
-
+      
       if(count($global_config) > 0) $this->generate_conditions($global_config);
-       
+
       $link = '?';
       $get_vars = array_merge($this->_get, $this->attributes);
-
+      
+      $pagination_variable = Config::getPaginationVariable();
+      
+      if(isset($_GET[$pagination_variable])) $get_vars[$pagination_variable] = $_GET[$pagination_variable];
+      
       foreach ($get_vars as $key => $value) $link.="$key=$value&";
 
+      return substr($link, 0, -1);
+   }
+   
+   public function params(){
+      
+      $global_config = Helper::pick($this->getConfig(), array());
+      
+      if(count($global_config) > 0) $this->generate_conditions($global_config);
+   
+      $link = '';
+      
+      foreach ($this->_get as $key => $value) $link.="$key=$value&";
+   
       return substr($link, 0, -1);
    }
 }
