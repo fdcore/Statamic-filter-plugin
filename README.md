@@ -4,12 +4,12 @@ Filter plugin for Statamic
 Plugin generate conditions text for {{ entries:listing }}.
 
 ## Install
-  
+
 1. Download and unpack
 2. Put folders to **_add-ons** folder and to **_config/add-ons**
-  
+
 ## Tags
-  
+
 Put tag `{{ filter }}` to conditions in `{{ entries:listing }}`.
 
 Example
@@ -53,6 +53,7 @@ year: # key name in GET
   name: year # (not required) field name in your fields
   filter: int, abs, no_zero # (not required) filter list
   default: 2014 # (not required) default value if get param no set
+  condition: "=>" # (not required) if you need a value not more or less.
 ```
 
 ### Filter list

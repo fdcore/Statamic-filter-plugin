@@ -3,6 +3,6 @@ _max_length: 20
 # Example
 
 # year: # key name in GET 
-# 	name: year # (not required) field name in your fields
-# 	filter: int, abs, no_zero # (not required) filter list
-# 	default: 2014 # (not required) default value if get param no set
+#   name: year # (not required) field name in your fields
+#   filter: int, abs, no_zero # (not required) filter list
+#   default: 2014 # (not required) default value if get param no set

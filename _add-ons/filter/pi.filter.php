@@ -18,14 +18,20 @@ class Plugin_filter extends Plugin
         
         $conditions = '';
 
-   	  if(count($global_config) > 0){
-   	  	  $conditions = $this->generate_conditions($global_config);
-   	  }
+        if(count($global_config) > 0){
+             $conditions = $this->generate_conditions($global_config);
+        }
 
       return $conditions;
    }
 
    private function generate_conditions($params_list){
+      
+      // return cached data
+      $content = $this->blink->get('filter');
+      
+      if($content) 
+         return $content;
       
       foreach ($params_list as $key => $values) {
          
@@ -45,13 +51,16 @@ class Plugin_filter extends Plugin
              $value = trim($value);
          });
 
-
          $key_name = $key;
+         $cond = '';
          
          // check secure orig name
          if(isset($values['name']) && $values['name'] != '') 
                $cond_key = $values['name']; else $cond_key = $key;
-
+         
+         if(isset($values['condition']) && $values['condition'] != '') 
+            $cond = $values['condition'];
+            
          // check GET var & secure array check
          if(isset($_GET[$key_name]) && !is_array($_GET[$key_name])){
 
@@ -67,7 +76,7 @@ class Plugin_filter extends Plugin
 
             if(isset($params_list['_max_length']) && strlen($_var) > $params_list['_max_length']) continue;
 
-            $this->_c($cond_key, $_var);
+            $this->_c($cond_key, $cond.$_var);
             $this->_g($key_name, $_var);
 
          } else {
@@ -78,8 +87,11 @@ class Plugin_filter extends Plugin
 
       }// end each
 
-
-      return implode(',', $this->_cond);
+      $conditions = implode(',', $this->_cond);
+      
+      $this->blink->set('filter', $conditions);
+      
+      return $this->_conditions;
 
    }
 
